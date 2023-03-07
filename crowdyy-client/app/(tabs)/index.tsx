@@ -1,39 +1,41 @@
 import { StyleSheet } from 'react-native';
 
 import { View } from '../../components/Themed';
-import { useEffect, useState } from 'react';
+import { Map } from '../../components/Map'
+import { useEffect } from 'react';
 
 import  LocationService  from '../../services/LocationService'
-import { Location } from "../../types/Location";
 
-import MapView, { Heatmap, PROVIDER_GOOGLE } from 'react-native-maps';
+import { PROVIDER_GOOGLE } from 'react-native-maps';
+import { useLocations } from '../../hooks/useLocation';
 
 export default function TabOneScreen() {
-  const [points, setPoints] = useState<Location[]>();
+  const {
+    points,
+    region,
+    onPointsChange,
+    onRegionChange
+  } = useLocations({
+    latitude: 35.155084,
+    longitude: -89.989287,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  }); //replace initial region with user's current location
 
   useEffect(() => {
     LocationService.getLocations()
-       .then(locations => setPoints(locations));
+       .then(locations => onPointsChange(locations));
   }, []);
 
   return (
     <View style={styles.container}>
-       <MapView
-	        provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          region={{
-            latitude: 6.82646681,
-            longitude: 79.87121907,
-            latitudeDelta: 0.09,
-            longitudeDelta: 0.0121
-          }}
-        >
-          <Heatmap 
-            points={points}
-            opacity={1}
-            radius={20}
-          />
-        </MapView>
+      <Map
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        points = {points}
+        initialRegion={region}
+        onRegionChange={onRegionChange}
+      />
     </View>
   );
 }
