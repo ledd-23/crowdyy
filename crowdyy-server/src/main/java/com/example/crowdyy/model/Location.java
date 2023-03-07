@@ -14,8 +14,8 @@ public class Location {
     @Column(name = "longitude")
     private double longitude;
 
-    @Column(name = "elevation")
-    private double elevation;
+    @Column(name = "weight")
+    private double weight;
 
     public double getLatitude() {
         return latitude;
@@ -33,11 +33,11 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public double getElevation() {
-        return elevation;
+    public double getWeight() {
+        return weight;
     }
 
-    public void setElevation(double elevation) {
-        this.elevation = elevation;
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 }
