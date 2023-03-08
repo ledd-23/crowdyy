@@ -3,9 +3,9 @@ import { Location } from "../types/Location";
 import { Region } from "../types/Region";
 
 
-export function useLocations(initialRegion: Region) {
+export function useLocations() {
   const [points, setPoints] = useState<Location[]>([]);
-  const [region, setRegion] = useState<Region>(initialRegion);
+  const [region, setRegion] = useState<Region>();
 
   function onRegionChange(region: Region) {
     setRegion(region);
