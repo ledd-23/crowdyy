@@ -6,8 +6,7 @@ import { useEffect } from 'react';
 
 import  LocationService  from '../../services/LocationService'
 import { PROVIDER_GOOGLE } from 'react-native-maps';
-import { useLocations } from '../../hooks/useLocation';
-import * as Location from 'expo-location';
+import { useLocations, DEFAULT_REGION } from '../../hooks/useLocation';
 
 export default function TabOneScreen() {
   const {
@@ -18,22 +17,10 @@ export default function TabOneScreen() {
   } = useLocations();
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location["coords"];
-      onRegionChange({
-        latitude: latitude, 
-        longitude: longitude, 
-        latitudeDelta: 0.01, 
-        longitudeDelta: 0.01,
-      });
-    })();
-    LocationService.getLocations()
-        .then(locations => onPointsChange(locations));
+    LocationService.getCurrentRegion()
+      .then(region => onRegionChange(region ?? DEFAULT_REGION));
+    LocationService.getAllLocations()
+      .then(locations => onPointsChange(locations));
   }, []);
 
   return (
