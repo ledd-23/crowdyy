@@ -22,4 +22,10 @@ public class LocationServiceImpl implements LocationService {
     public List<Location> findAll() {
         return locationRepository.findAll();
     }
+
+    @Override
+    public List<Location> findSurrounding(double lat1, double lat2, double long1, double long2) {
+        return locationRepository
+                .findAllByLatitudeBeforeAndLatitudeAfterAndLongitudeBeforeAndLongitudeAfter(lat1, lat2, long1, long2);
+    }
 }

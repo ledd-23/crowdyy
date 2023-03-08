@@ -23,4 +23,9 @@ public class LocationController {
     public Location addLocation(Location loc) {
         return locationService.add(loc);
     }
+
+    @GetMapping("/locations/surrounding")
+    public List<Location> getSurrounding(double lat1, double lat2, double long1, double long2) {
+        return locationService.findSurrounding(lat1, lat2, long1, long2);
+    }
 }
