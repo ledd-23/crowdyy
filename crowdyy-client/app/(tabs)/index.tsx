@@ -5,37 +5,33 @@ import { Map } from '../../components/Map'
 import { useEffect } from 'react';
 
 import  LocationService  from '../../services/LocationService'
-
 import { PROVIDER_GOOGLE } from 'react-native-maps';
-import { useLocations } from '../../hooks/useLocation';
+import { useLocations, DEFAULT_REGION } from '../../hooks/useLocation';
 
 export default function TabOneScreen() {
   const {
     points,
     region,
     onPointsChange,
-    onRegionChange
-  } = useLocations({
-    latitude: 35.155084,
-    longitude: -89.989287,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
-  }); //replace initial region with user's current location
+    onRegionChange,
+  } = useLocations();
 
   useEffect(() => {
-    LocationService.getLocations()
-       .then(locations => onPointsChange(locations));
+    LocationService.getCurrentRegion()
+      .then(region => onRegionChange(region ?? DEFAULT_REGION));
+    LocationService.getAllLocations()
+      .then(locations => onPointsChange(locations));
   }, []);
 
   return (
     <View style={styles.container}>
-      <Map
+      {region && <Map
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         points = {points}
         initialRegion={region}
         onRegionChange={onRegionChange}
-      />
+      />}
     </View>
   );
 }
