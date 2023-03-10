@@ -12,6 +12,14 @@ class LocationService {
       });
   }
 
+  async getSurroundingLocations(lat1: number, lat2: number, long1: number, long2: number): Promise<Location[] | undefined> {
+    return fetch(`${API_HOST}/locations/surrounding?lat1=${lat1}&lat2=${lat2}&long1=${long1}&long2=${long2}`)
+      .then(res => res.json())
+      .then(res => {
+        return res as Location[]
+      });
+  }
+
   async getCurrentRegion(): Promise<Region | undefined> {
     const { status } = await ExpoLocation.requestForegroundPermissionsAsync();
     if (status !== 'granted') {

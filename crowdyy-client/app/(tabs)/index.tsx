@@ -19,9 +19,15 @@ export default function TabOneScreen() {
   useEffect(() => {
     LocationService.getCurrentRegion()
       .then(region => onRegionChange(region ?? DEFAULT_REGION));
-    LocationService.getAllLocations()
-      .then(locations => onPointsChange(locations));
   }, []);
+
+  useEffect(() => {
+    if (region) {
+      const { latitude, longitude, latitudeDelta, longitudeDelta } = region;
+      LocationService.getSurroundingLocations(latitude + latitudeDelta/2, latitude - latitudeDelta/2, longitude + longitudeDelta/2, longitude - longitudeDelta/2)
+        .then(locations => onPointsChange(locations));
+    }
+  }, [region])
 
   return (
     <View style={styles.container}>
